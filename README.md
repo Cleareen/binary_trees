@@ -1,5 +1,4 @@
-# Files:
-----> ***main.c:** these files are handlers for the corresponding function.
+***main.c:** these files are handlers for the corresponding function.
 ----> ***.h:** these are header files with macros, prototype functions, and structures
 
 - 0-binary_tree_node.c
