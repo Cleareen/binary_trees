@@ -1,40 +1,67 @@
 #include "binary_trees.h"
-#include "9-binary_tree_height.c"
+
 /**
- *print_level - print the nodes by level
- *@func: pointer to a functionn
- *@level: the level
- *@node: pointer to the node
- *Return: nothing
+ * recursive_height - measures the height of a binary tree
+ *
+ * @tree: tree root
+ * Return: height
  */
-void print_level(binary_tree_t *node, void (*func)(int), int level)
+size_t recursive_height(const binary_tree_t *tree)
 {
-if (node != NULL && func != NULL)
-{
-if (level == 1)
-func(node->n);
-if (level > 1)
-{
-print_level(node->left, func, level - 1);
-print_level(node->right, func, level - 1);
+	size_t left = 0;
+	size_t right = 0;
+
+	if (tree == NULL)
+		return (0);
+
+	left = recursive_height(tree->left);
+	right = recursive_height(tree->right);
+
+	if (left > right)
+		return (left + 1);
+
+	return (right + 1);
 }
-}
-}
+
 /**
- *binary_tree_levelorder - level-order traversal
- *@tree: pointer to the tree
- *@func: pointer to a function
- *Return: nothing
+ * print_level - prints nodes at the same level
+ *
+ * @tree: tree root
+ * @level: level node
+ * @func: pointer to a function
+ * Return: no return
+ */
+void print_level(const binary_tree_t *tree, int level, void (*func)(int))
+{
+	if (tree == NULL)
+		return;
+
+	if (level == 1)
+		func(tree->n);
+	else if (level > 1)
+	{
+		print_level(tree->left, level - 1, func);
+		print_level(tree->right, level - 1, func);
+	}
+}
+
+/**
+ * binary_tree_levelorder - prints data in level-order traversal
+ *
+ * @tree: tree root
+ * @func: pointer to a function
+ * Return: no return
  */
 void binary_tree_levelorder(const binary_tree_t *tree, void (*func)(int))
 {
-size_t height = 0;
-size_t counter;
-binary_tree_t *copy_tree = (binary_tree_t *)tree;
+	size_t height;
+	size_t i;
 
-if (tree == NULL || func == NULL)
-return;
-height = binary_tree_height(tree);
-for (counter = 0; counter <= height + 1; counter++)
-print_level(copy_tree, func, counter);
+	if (tree == NULL || func == NULL)
+		return;
+
+	height = recursive_height(tree);
+
+	for (i = 1; i <= height; i++)
+		print_level(tree, i, func);
 }
